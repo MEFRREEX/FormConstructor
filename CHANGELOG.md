@@ -1,3 +1,6 @@
+# 2.0.3
+1. Plugin adapted for PowerNukkitX 2.0
+
 # 2.0.2
 1. Fixed Input#setDefaultValue method
 
