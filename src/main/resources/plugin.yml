@@ -1,6 +1,6 @@
 name: "${project.name}"
 version: "${project.version}"
-api: ["1.0.13"]
+api: ["2.0.0"]
 authors: ["ScarletRedMan", "MEFRREEX"]
 description: "Library for easy creating and handling of forms"
 main: com.formconstructor.FormConstructor
