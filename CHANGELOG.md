@@ -1,4 +1,4 @@
-# 2.0.3
+# 2.0.2-PNX
 1. Plugin adapted for PowerNukkitX 2.0
 
 # 2.0.2
