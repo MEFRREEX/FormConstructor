@@ -165,7 +165,7 @@ public void onFormSend(PlayerFormSendEvent event) {
 <dependency>
     <groupId>com.github.MEFRREEX</groupId>
     <artifactId>FormConstructor</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.3</version>
 </dependency>
 ```
 
