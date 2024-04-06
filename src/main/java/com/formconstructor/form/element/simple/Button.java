@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter 
 public class Button extends FormElement {
 
-    private ButtonImage image;
+    private ImageData image;
     
     private transient SimpleFormHandler handler;
 
@@ -29,7 +29,7 @@ public class Button extends FormElement {
 
     public Button(String name, ImageType imageType, String image, SimpleFormHandler handler) {
         super(name);
-        this.image = new ButtonImage(imageType, image);
+        this.image = new ImageData(imageType, image);
         this.handler = handler;
     }
 
@@ -40,13 +40,22 @@ public class Button extends FormElement {
 
     /**
      * Set button image
+     * @param image ImageData
+     * @return Button
+     */
+    public Button setImage(ImageData image) {
+        this.image = image;
+        return this;
+    }
+
+    /**
+     * Set button image
      * @param type Type of image on button
      * @param path Path to image on button
      * @return Button
      */
     public Button setImage(ImageType type, String path) {
-        this.image = new ButtonImage(type, path);
-        return this;
+        return setImage(new ImageData(type, path));
     }
 
     /**

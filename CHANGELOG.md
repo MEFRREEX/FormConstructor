@@ -1,3 +1,7 @@
+# 2.0.3
+1. Renamed ButtonImage to ImageData
+2. Added method `setImage(Image image)` in Button class
+
 # 2.0.2-PNX
 1. Plugin adapted for PowerNukkitX 2.0
 

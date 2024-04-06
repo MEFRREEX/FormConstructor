@@ -4,16 +4,16 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
 @Getter
-public class ButtonImage {
+public class ImageData {
 
     @SerializedName("type") private final ImageType type;
     @SerializedName("data") private final String path;
 
-    public ButtonImage() {
+    public ImageData() {
         this(ImageType.PATH, "");
     }
 
-    public ButtonImage(ImageType type, String path) {
+    public ImageData(ImageType type, String path) {
         this.path = path;
         this.type = type;
     }
