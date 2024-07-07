@@ -1,31 +1,23 @@
-![logo by @tolimag](.github/logo_v2.png)
+![logo](https://raw.githubusercontent.com/MEFRREEX/FormConstructor/master/.github/logo_v2.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-2.0.1-brightgreen)](https://github.com/MEFRREEX/FormConstructor/releases/tag/2.0.1)
 [![Jitpack](https://jitpack.io/v/MEFRREEX/FormConstructor.svg)](https://jitpack.io/#MEFRREEX/FormConstructor)
 [![CloudBurst](https://img.shields.io/badge/CloudBurst-2.0.1-brightgreen)](https://cloudburstmc.org/resources/formconstructor-v2.957)
 
-> [!IMPORTANT]
-> The current version of FormConstructor plugin is 2.0.0, if your plugin does not support this version you can download FormConstructor version 1.1.4 from the link below:         
-> [Download FormConstructor 1.1.4](https://github.com/MEFRREEX/FormConstructor/tree/1.1.4)
-
-Full list of changes: [CHANGELOG](CHANGELOG.md)
-
-🤔 Introduction
-------------- 
+# 🤔 Introduction
 
 Library is designed to simplify the creation and handling of forms.
-It has a few key advantages over other  form libraries:
+It has a few key advantages over other form libraries:
 
-- Forms are processed using a lambda, which is passed when the form itself is created, and not by catching events.
-- For each button in SimpleForm we can set a lambda function.
+- Forms are handled using a lambda that is passed in when the form itself is created, and not by catching events.
+- For each button in SimpleForm, we can set a handler.
 - In SimpleForm we get a button object as a response, where we can get its name and index.
 - In CustomForm we can mark elements with an identifier to conveniently get this element in its handler. We can get element by id and its index.
 - For each form we can set its closing handler.
 - Easy async handling.
 
-🛠 Examples
--------------
+## 🛠 Examples
 
 Creating a SimpleForm:
 
@@ -126,10 +118,8 @@ form.send(player);
 
 ### Async handling
 Also you can use method `sendAsync(player)` or `send(player, true)` for using async form handling.
-But this may cause some restrictions. What exactly - I don't know.
 
-📋 Events
--------------
+## 📋 Events
 | Name                 | Cancellable | Description                      |
 |----------------------|-------------|----------------------------------|
 | PlayerFormSendEvent  | true        | Called when a form is sent       |
@@ -146,11 +136,12 @@ public void onFormSend(PlayerFormSendEvent event) {
 }
 ```
 
-🔌 Maven
--------------
+## 🔌 Installation
+Place the plugin of the appropriate version in the `plugins` folder.
 
-#### Repository
+### Maven
 
+Repository:
 ```xml
 <repositories>
     <repository>
@@ -160,7 +151,7 @@ public void onFormSend(PlayerFormSendEvent event) {
 </repositories>
 ```
 
-#### Dependency
+Dependency
 ```xml
 <dependency>
     <groupId>com.github.MEFRREEX</groupId>
@@ -169,7 +160,17 @@ public void onFormSend(PlayerFormSendEvent event) {
 </dependency>
 ```
 
-💰 Donate
--------------
+### Gradle
 
-- [DonationAlerts](https://www.donationalerts.com/r/qpexlegendary)
+Repository:
+```groovy
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+```
+Dependency:
+```groovy
+dependencies {
+    implementation 'com.github.MEFRREEX:FormConstructor:2.0.3'
+}
