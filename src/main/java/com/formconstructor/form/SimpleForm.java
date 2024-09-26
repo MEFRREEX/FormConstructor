@@ -2,7 +2,7 @@ package com.formconstructor.form;
 
 import com.formconstructor.form.element.simple.Button;
 import com.formconstructor.form.element.simple.ImageType;
-import com.formconstructor.form.handler.CloseHandler;
+import com.formconstructor.form.handler.CloseFormHandler;
 import com.formconstructor.form.handler.SimpleFormHandler;
 import com.formconstructor.form.response.SimpleFormResponse;
 import lombok.Getter;
@@ -33,11 +33,11 @@ public class SimpleForm extends CloseableForm {
         this(title, content, null);
     }
 
-    public SimpleForm(String title, String content, CloseHandler closeHandler) {
+    public SimpleForm(String title, String content, CloseFormHandler closeHandler) {
         this(title, content, closeHandler, null);
     }
 
-    public SimpleForm(String title, String content, CloseHandler closeHandler, Collection<Button> buttons) {
+    public SimpleForm(String title, String content, CloseFormHandler closeHandler, Collection<Button> buttons) {
         super(FormType.SIMPLE);
         this.title = title;
         this.content = content;

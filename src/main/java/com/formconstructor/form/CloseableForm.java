@@ -1,6 +1,6 @@
 package com.formconstructor.form;
 
-import com.formconstructor.form.handler.CloseHandler;
+import com.formconstructor.form.handler.CloseFormHandler;
 import lombok.Getter;
 
 @Getter
@@ -10,14 +10,14 @@ public abstract class CloseableForm extends Form {
         super(type);
     }
 
-    private transient CloseHandler closeHandler;
+    private transient CloseFormHandler closeHandler;
 
     /**
      * Set the form close handler
      * @param closeHandler CloseHandler
      * @return CloseableForm
      */
-    public CloseableForm setCloseHandler(CloseHandler closeHandler) {
+    public CloseableForm setCloseHandler(CloseFormHandler closeHandler) {
         this.closeHandler = closeHandler;
         return this;
     }
