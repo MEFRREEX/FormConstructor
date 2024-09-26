@@ -7,7 +7,8 @@ import cn.nukkit.event.HandlerList;
 import lombok.Setter;
 import lombok.Getter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class PlayerFormSendEvent extends FormEvent implements Cancellable {
  
     private final Player player;

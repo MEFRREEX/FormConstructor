@@ -40,7 +40,7 @@ form.addButton("Button", (pl, b) -> {
         }));
 
 // Setting the form close handler
-form.setNoneHandler(pl -> {
+form.setCloseHandler(pl -> {
     pl.sendMessage("You closed the form!");
 });
 
@@ -63,7 +63,7 @@ form.setHandler((pl, result) -> {
 });
 
 // Setting the form close handler
-form.setNoneHandler(pl -> pl.sendMessage("You closed the form!"));
+form.setCloseHandler(pl -> pl.sendMessage("You closed the form!"));
 form.send(player);
 ```
 
