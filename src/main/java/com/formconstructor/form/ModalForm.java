@@ -71,8 +71,8 @@ public class ModalForm extends CloseableForm {
      * @param content Text
      * @return ModalForm
      */
-    public ModalForm addContent(String addition) {
-        this.content += addition;
+    public ModalForm addContent(String content) {
+        this.content += content;
         return this;
     }
 

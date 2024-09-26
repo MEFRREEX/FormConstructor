@@ -5,7 +5,8 @@ import com.formconstructor.form.element.FormElement;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public abstract class CustomElement extends FormElement {
 
     private final ElementType type;
@@ -18,5 +19,4 @@ public abstract class CustomElement extends FormElement {
     }
 
     public abstract boolean respond(Object data);
-
 }

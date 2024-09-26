@@ -12,8 +12,7 @@ public class ModalFormResponse extends FormResponse<ModalFormHandler> {
     @Override
     public void handle(Player player) {
         if (this.getHandler() != null) {
-            this.getHandler().handle(player, 
-            this.getData().equals("true"));
+            this.getHandler().handle(player, this.getData().equals("true"));
         }
     }
 }

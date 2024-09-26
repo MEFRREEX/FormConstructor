@@ -19,7 +19,7 @@ public class CustomForm extends CloseableForm {
     private String title;
 
     @SerializedName("content")
-    private List<CustomElement> elements = new ArrayList<>();
+    private final List<CustomElement> elements = new ArrayList<>();
 
     @Getter
     private transient boolean validated = true;
