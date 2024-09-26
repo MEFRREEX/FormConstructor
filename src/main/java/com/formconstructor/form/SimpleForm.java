@@ -17,7 +17,7 @@ public class SimpleForm extends CloseableForm {
 
     private String title;
     private String content;
-    private List<Button> buttons = new ArrayList<>();
+    private final List<Button> buttons = new ArrayList<>();
     
     private transient SimpleFormResponse response;
 
@@ -73,8 +73,8 @@ public class SimpleForm extends CloseableForm {
      * @param content Text
      * @return SimpleForm
      */
-    public SimpleForm addContent(String addition) {
-        this.content += addition;
+    public SimpleForm addContent(String content) {
+        this.content += content;
         return this;
     }
 
@@ -174,5 +174,4 @@ public class SimpleForm extends CloseableForm {
 
         this.response = new SimpleFormResponse(buttons.get(buttonId));
     }
-    
 }

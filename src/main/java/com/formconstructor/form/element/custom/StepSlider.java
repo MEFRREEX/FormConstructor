@@ -3,25 +3,25 @@ package com.formconstructor.form.element.custom;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.SelectableElement;
 import com.google.gson.annotations.SerializedName;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class StepSlider extends CustomElement {
 
-    @Getter
     @SerializedName("default")
     private int defaultIndex;
 
+    @Getter(value = AccessLevel.NONE)
     @SerializedName("steps")
-    private List<String> options = new ArrayList<>();
+    private final List<String> options = new ArrayList<>();
 
-    @Getter
-    private transient List<SelectableElement> elements = new ArrayList<>();
+    private final transient List<SelectableElement> elements = new ArrayList<>();
 
-    @Getter
     private transient int selectedIndex = -1;
 
     public StepSlider() {
@@ -79,11 +79,11 @@ public class StepSlider extends CustomElement {
     }
 
     public SelectableElement getDefault() {
-        return (elements.size() == 0 || (elements.size() == 1 && defaultIndex == 1)) ? null : elements.get(defaultIndex);
+        return (elements.isEmpty() || (elements.size() == 1 && defaultIndex == 1)) ? null : elements.get(defaultIndex);
     }
 
     public SelectableElement getValue() {
-        return (elements.size() == 0 || (elements.size() == 1 && selectedIndex == 1)) ? null : elements.get(selectedIndex);
+        return (elements.isEmpty() || (elements.size() == 1 && selectedIndex == 1)) ? null : elements.get(selectedIndex);
     }
 
     @Override

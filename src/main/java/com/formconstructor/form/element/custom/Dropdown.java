@@ -3,24 +3,24 @@ package com.formconstructor.form.element.custom;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.SelectableElement;
 import com.google.gson.annotations.SerializedName;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class Dropdown extends CustomElement {
 
-    @Getter
     @SerializedName("default")
     private int defaultIndex;
 
-    private List<String> options = new ArrayList<>();
+    @Getter(value = AccessLevel.NONE)
+    private final List<String> options = new ArrayList<>();
 
-    @Getter
-    private transient List<SelectableElement> elements = new ArrayList<>();
+    private final transient List<SelectableElement> elements = new ArrayList<>();
 
-    @Getter
     private transient int selectedIndex = -1;
 
     public Dropdown() {

@@ -3,7 +3,8 @@ package com.formconstructor.form.element;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class SelectableElement {
 
     private final String name;

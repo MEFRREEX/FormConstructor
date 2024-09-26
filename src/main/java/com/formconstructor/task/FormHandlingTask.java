@@ -48,7 +48,6 @@ public class FormHandlingTask extends AsyncTask {
 
         if (response instanceof CustomFormResponse customResponse) {
             customResponse.handle(player);
-            return;
         }
     }
 }
