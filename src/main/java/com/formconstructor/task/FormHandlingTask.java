@@ -6,7 +6,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.scheduler.AsyncTask;
 import com.formconstructor.form.CloseableForm;
 import com.formconstructor.form.Form;
-import com.formconstructor.form.handler.CloseHandler;
+import com.formconstructor.form.handler.CloseFormHandler;
 import com.formconstructor.form.response.CustomFormResponse;
 import com.formconstructor.form.response.ModalFormResponse;
 import com.formconstructor.form.response.SimpleFormResponse;
@@ -27,7 +27,7 @@ public class FormHandlingTask extends AsyncTask {
     @Override
     public void onRun() {
         if (response == null && form instanceof CloseableForm closeableForm) {
-            CloseHandler closeHandler = closeableForm.getCloseHandler();
+            CloseFormHandler closeHandler = closeableForm.getCloseHandler();
             
             PlayerFormCloseEvent event = new PlayerFormCloseEvent(player, form);
             Server.getInstance().getPluginManager().callEvent(event);
