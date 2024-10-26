@@ -156,7 +156,7 @@ Dependency
 <dependency>
     <groupId>com.github.MEFRREEX</groupId>
     <artifactId>FormConstructor</artifactId>
-    <version>2.0.3</version>
+    <version>TAG</version>
 </dependency>
 ```
 
@@ -172,5 +172,5 @@ repositories {
 Dependency:
 ```groovy
 dependencies {
-    implementation 'com.github.MEFRREEX:FormConstructor:2.0.3'
+    implementation 'com.github.MEFRREEX:FormConstructor:TAG'
 }
