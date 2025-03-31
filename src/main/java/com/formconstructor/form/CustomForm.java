@@ -1,6 +1,5 @@
 package com.formconstructor.form;
 
-import cn.nukkit.Player;
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.general.Label;
@@ -14,6 +13,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a custom form with inputs, toggles, dropdowns etc.
+ */
 @Getter
 public class CustomForm extends CloseableForm {
 
@@ -28,19 +30,28 @@ public class CustomForm extends CloseableForm {
     private transient CustomFormHandler handler;
     private transient CustomFormResponse response;
 
+    /**
+     * Creates an empty custom form.
+     */
     public CustomForm() {
         this("");
     }
 
+    /**
+     * Creates a custom form with title.
+     *
+     * @param title The form title
+     */
     public CustomForm(String title) {
         super(FormType.CUSTOM);
         this.title = title;
     }
 
     /**
-     * Set form title
-     * @param title Text
-     * @return SimpleForm
+     * Sets the form title.
+     *
+     * @param title The title text
+     * @return This form instance for chaining
      */
     public CustomForm setTitle(String title) {
         this.title = title;
@@ -48,28 +59,31 @@ public class CustomForm extends CloseableForm {
     }
 
     /**
-     * Add text element
-     * @param text Text
-     * @return CustomForm
+     * Adds a text label element to the form.
+     *
+     * @param text The label text
+     * @return This form instance for chaining
      */
     public CustomForm addElement(String text) {
         return this.addElement(new Label(text));
     }
 
     /**
-     * Add form element
-     * @param element CustomElement
-     * @return CustomForm
+     * Adds a custom form element.
+     *
+     * @param element The element to add
+     * @return This form instance for chaining
      */
     public CustomForm addElement(ElementCustom element) {
         return this.addElement(element.getName(), element);
     }
 
     /**
-     * Add form element
-     * @param elementId Element identifier
-     * @param element   CustomElement
-     * @return CustomForm
+     * Adds a custom form element with specified ID.
+     *
+     * @param elementId The unique identifier for the element
+     * @param element The element to add
+     * @return This form instance for chaining
      */
     public CustomForm addElement(String elementId, ElementCustom element) {
         elements.add(element);
@@ -80,15 +94,21 @@ public class CustomForm extends CloseableForm {
     }
 
     /**
-     * Set form handler
-     * @param handler CustomFormHandler
-     * @return CustomForm
-    */
+     * Sets the form submission handler.
+     *
+     * @param handler The handler to process form responses
+     * @return This form instance for chaining
+     */
     public CustomForm setHandler(CustomFormHandler handler) {
         this.handler = handler;
         return this;
     }
 
+    /**
+     * Processes the form response data.
+     *
+     * @param data The raw response data from client
+     */
     @Override
     public void setResponse(String data) {
         if (data.equals("null")) {
