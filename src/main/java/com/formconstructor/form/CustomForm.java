@@ -112,9 +112,4 @@ public class CustomForm extends CloseableForm {
 
         this.response = new CustomFormResponse(handler, elements, this);
     }
-
-    public void send(Player player, CustomFormHandler handler) {
-        this.setHandler(handler);
-        this.send(player);
-    }
 }
