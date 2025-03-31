@@ -2,12 +2,16 @@ package com.formconstructor.form;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.form.window.FormWindow;
 import com.formconstructor.event.PlayerFormSendEvent;
+import com.formconstructor.form.response.FormResponse;
+import com.formconstructor.service.FormService;
+import com.google.gson.Gson;
 import lombok.Getter;
 
 @Getter
-public abstract class Form extends FormWindow {
+public abstract class Form {
+
+    private static final Gson GSON = new Gson();
 
     private final FormType type;
     private transient boolean async;
@@ -16,34 +20,29 @@ public abstract class Form extends FormWindow {
         this.type = type;
     }
 
-    /**
-     * Send form
-     * @param player Player
-     */
     public void send(Player player) {
-        send(player, false);
+        this.send(player, false);
     }
 
-    /**
-     * Send form
-     * @param player Player
-     * @param async  Send form asynchronously
-     */
     public void send(Player player, boolean async) {
         PlayerFormSendEvent event = new PlayerFormSendEvent(player, this, async);
         Server.getInstance().getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) {
             this.async = event.isAsync();
-            player.showFormWindow(this);
+            FormService.getInstance().sendForm(player, this);
         }
     }
 
-    /**
-     * Send form asynchronously
-     * @param player Player
-     */
     public void sendAsync(Player player) {
-        send(player, true);
+        this.send(player, true);
+    }
+
+    public abstract void setResponse(String data);
+
+    public abstract FormResponse<?> getResponse();
+
+    public String toJson() {
+        return GSON.toJson(this);
     }
 }

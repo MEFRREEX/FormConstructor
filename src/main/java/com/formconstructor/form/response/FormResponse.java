@@ -5,7 +5,7 @@ import com.formconstructor.form.handler.FormHandler;
 import lombok.Getter;
 
 @Getter
-public abstract class FormResponse<T extends FormHandler> extends cn.nukkit.form.response.FormResponse {
+public abstract class FormResponse<T extends FormHandler> {
 
     private final T handler;
     private final String data;
