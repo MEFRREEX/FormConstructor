@@ -1,6 +1,7 @@
 package com.formconstructor.service;
 
 import cn.nukkit.Player;
+import cn.nukkit.network.protocol.ClientboundCloseFormPacket;
 import cn.nukkit.network.protocol.ModalFormRequestPacket;
 import com.formconstructor.form.Form;
 
@@ -41,6 +42,12 @@ public class FormServiceImpl implements FormService {
         packet.formId = formId;
         packet.data = form.toJson(player.protocol);
         player.dataPacket(packet);
+    }
+
+    @Override
+    public void closeForms(Player player) {
+        storedForms.clear();
+        player.dataPacket(new ClientboundCloseFormPacket());
     }
 
     @Override

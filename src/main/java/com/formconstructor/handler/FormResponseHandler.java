@@ -26,7 +26,7 @@ public class FormResponseHandler implements Listener {
                     String formData = packet.data;
                     storedForm.setResponse(formData != null ? formData.trim() : null);
 
-                    FormHandlingTask formHandlingTask = new FormHandlingTask(storedForm.getResponse(), storedForm, player);
+                    FormHandlingTask formHandlingTask = new FormHandlingTask(storedForm, storedForm.getResponse(), player);
                     if (storedForm.isAsync()) {
                         Server.getInstance().getScheduler().scheduleAsyncTask(FormConstructor.getInstance(), formHandlingTask);
                     } else {

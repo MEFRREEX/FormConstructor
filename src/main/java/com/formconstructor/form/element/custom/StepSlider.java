@@ -61,13 +61,11 @@ public class StepSlider extends ElementIdentifiable implements ElementCustom {
     }
 
     public StepSlider addStep(String name, Object value) {
-        addStep(new SelectableElement(name, value));
-        return this;
+        return this.addStep(new SelectableElement(name, value));
     }
 
     public StepSlider addStep(String name) {
-        addStep(name, null);
-        return this;
+        return this.addStep(name, null);
     }
 
     public StepSlider addSteps(Collection<SelectableElement> elements) {

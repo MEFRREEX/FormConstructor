@@ -14,13 +14,13 @@ import com.formconstructor.form.response.SimpleFormResponse;
 
 public class FormHandlingTask extends AsyncTask {
 
-    private final FormResponse<?> response;
     private final Form form;
+    private final FormResponse<?> response;
     private final Player player;
 
-    public FormHandlingTask(FormResponse<?> response, Form form, Player player) {
-        this.response = response;
+    public FormHandlingTask(Form form, FormResponse<?> response, Player player) {
         this.form = form;
+        this.response = response;
         this.player = player;
     }
 

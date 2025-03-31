@@ -13,7 +13,7 @@ public interface ElementSimple {
     ElementType getType();
 
     /**
-     * Gets the name/identifier of this element.
+     * Gets the name (text) of this element.
      *
      * @return The element name
      */

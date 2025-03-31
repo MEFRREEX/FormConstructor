@@ -16,6 +16,8 @@ public interface FormService {
 
     void sendForm(Player player, Form form, int formId);
 
+    void closeForms(Player player);
+
     int getNextFormId();
 
     static FormService getInstance() {

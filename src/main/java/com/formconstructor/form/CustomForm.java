@@ -26,7 +26,6 @@ public class CustomForm extends CloseableForm {
 
     @Getter
     private transient boolean validated = true;
-
     private transient CustomFormHandler handler;
     private transient CustomFormResponse response;
 
