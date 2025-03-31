@@ -3,7 +3,7 @@ package com.formconstructor.handler;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.AsyncTask;
-import com.formconstructor.event.PlayerFormCloseEvent;
+import com.formconstructor.event.form.PlayerFormCloseEvent;
 import com.formconstructor.form.CloseableForm;
 import com.formconstructor.form.Form;
 import com.formconstructor.form.handler.CloseFormHandler;
@@ -30,7 +30,7 @@ public class FormHandlingTask extends AsyncTask {
             CloseFormHandler closeHandler = closeableForm.getCloseHandler();
 
             PlayerFormCloseEvent event = new PlayerFormCloseEvent(player, form);
-            Server.getInstance().getPluginManager().callEvent(event);
+            event.callEvent();
 
             if (closeHandler != null) {
                 closeHandler.handle(player);

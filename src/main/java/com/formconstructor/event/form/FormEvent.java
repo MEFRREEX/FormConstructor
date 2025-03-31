@@ -1,4 +1,4 @@
-package com.formconstructor.event;
+package com.formconstructor.event.form;
 
 import com.formconstructor.form.Form;
 import cn.nukkit.event.Event;

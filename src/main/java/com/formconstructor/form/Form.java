@@ -1,9 +1,8 @@
 package com.formconstructor.form;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.network.protocol.ProtocolInfo;
-import com.formconstructor.event.PlayerFormSendEvent;
+import com.formconstructor.event.form.PlayerFormSendEvent;
 import com.formconstructor.form.response.FormResponse;
 import com.formconstructor.service.FormService;
 import com.google.gson.Gson;
@@ -41,9 +40,8 @@ public abstract class Form {
      */
     public void send(Player player, boolean async) {
         PlayerFormSendEvent event = new PlayerFormSendEvent(player, this, async);
-        Server.getInstance().getPluginManager().callEvent(event);
 
-        if (!event.isCancelled()) {
+        if (event.callEvent()) {
             this.async = event.isAsync();
             FormService.getInstance().sendForm(player, this);
         }
