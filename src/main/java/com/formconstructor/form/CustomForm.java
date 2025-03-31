@@ -1,8 +1,9 @@
 package com.formconstructor.form;
 
 import cn.nukkit.Player;
-import com.formconstructor.form.element.custom.CustomElement;
-import com.formconstructor.form.element.custom.Label;
+import com.formconstructor.form.element.ElementCustom;
+import com.formconstructor.form.element.ElementIdentifiable;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.element.custom.validator.ValidationField;
 import com.formconstructor.form.handler.CustomFormHandler;
 import com.formconstructor.form.response.CustomFormResponse;
@@ -19,7 +20,7 @@ public class CustomForm extends CloseableForm {
     private String title;
 
     @SerializedName("content")
-    private final List<CustomElement> elements = new ArrayList<>();
+    private final List<ElementCustom> elements = new ArrayList<>();
 
     @Getter
     private transient boolean validated = true;
@@ -61,7 +62,7 @@ public class CustomForm extends CloseableForm {
      * @return CustomForm
      */
     public CustomForm addElement(String text) {
-        return addElement(new Label(text));
+        return this.addElement(new Label(text));
     }
 
     /**
@@ -69,9 +70,8 @@ public class CustomForm extends CloseableForm {
      * @param element CustomElement
      * @return CustomForm
      */
-    public CustomForm addElement(CustomElement element) {
-        elements.add(element);
-        return this;
+    public CustomForm addElement(ElementCustom element) {
+        return this.addElement(element.getName(), element);
     }
 
     /**
@@ -80,9 +80,12 @@ public class CustomForm extends CloseableForm {
      * @param element   CustomElement
      * @return CustomForm
      */
-    public CustomForm addElement(String elementId, CustomElement element) {
-        element.setElementId(elementId);
-        return addElement(element);
+    public CustomForm addElement(String elementId, ElementCustom element) {
+        elements.add(element);
+        if (element instanceof ElementIdentifiable elementIdentifiable) {
+            elementIdentifiable.setElementId(elementId);
+        }
+        return this;
     }
 
     /**
@@ -104,7 +107,7 @@ public class CustomForm extends CloseableForm {
         Object[] result = new Gson().fromJson(data, Object[].class);
 
         for (int i = 0; i < elements.size(); i++) {
-            CustomElement element = elements.get(i);
+            ElementCustom element = elements.get(i);
 
             if (!element.respond(result[i])) {
                 this.response = new CustomFormResponse((player, response) -> send(player), elements, this);
@@ -114,10 +117,6 @@ public class CustomForm extends CloseableForm {
             if (element instanceof ValidationField && this.validated && !((ValidationField) element).isValidated()) {
                 this.validated = false;
             }
-        }
-
-        for (int index = 0; index < elements.size(); index++) {
-            elements.get(index).setIndex(index);
         }
 
         this.response = new CustomFormResponse(handler, elements, this);

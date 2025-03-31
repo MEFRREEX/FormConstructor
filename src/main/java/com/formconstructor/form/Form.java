@@ -2,6 +2,7 @@ package com.formconstructor.form;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.network.protocol.ProtocolInfo;
 import com.formconstructor.event.PlayerFormSendEvent;
 import com.formconstructor.form.response.FormResponse;
 import com.formconstructor.service.FormService;
@@ -11,7 +12,7 @@ import lombok.Getter;
 @Getter
 public abstract class Form {
 
-    private static final Gson GSON = new Gson();
+    protected static final Gson GSON = new Gson();
 
     private final FormType type;
     private transient boolean async;
@@ -43,6 +44,10 @@ public abstract class Form {
     public abstract FormResponse<?> getResponse();
 
     public String toJson() {
+        return this.toJson(ProtocolInfo.CURRENT_PROTOCOL);
+    }
+
+    public String toJson(int protocol) {
         return GSON.toJson(this);
     }
 }

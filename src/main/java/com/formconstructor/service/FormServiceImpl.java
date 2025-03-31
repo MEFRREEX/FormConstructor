@@ -39,7 +39,7 @@ public class FormServiceImpl implements FormService {
 
         ModalFormRequestPacket packet = new ModalFormRequestPacket();
         packet.formId = formId;
-        packet.data = form.toJson();
+        packet.data = form.toJson(player.protocol);
         player.dataPacket(packet);
     }
 

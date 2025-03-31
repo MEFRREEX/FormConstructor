@@ -2,13 +2,16 @@ package com.formconstructor.form.response;
 
 import cn.nukkit.Player;
 import com.formconstructor.form.CustomForm;
+import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.custom.validator.ValidationField;
 import com.formconstructor.form.element.custom.validator.Validator;
+import com.formconstructor.form.element.general.Divider;
+import com.formconstructor.form.element.general.Header;
 import com.formconstructor.form.handler.CustomFormHandler;
-import com.formconstructor.form.element.custom.CustomElement;
+import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.custom.Dropdown;
 import com.formconstructor.form.element.custom.Input;
-import com.formconstructor.form.element.custom.Label;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.element.custom.Slider;
 import com.formconstructor.form.element.custom.StepSlider;
 import com.formconstructor.form.element.custom.Toggle;
@@ -22,9 +25,9 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
 
     @Getter
     private final CustomForm form;
-    private final List<CustomElement> elements;
+    private final List<ElementCustom> elements;
 
-    public CustomFormResponse(CustomFormHandler handler, List<CustomElement> elements, CustomForm form) {
+    public CustomFormResponse(CustomFormHandler handler, List<ElementCustom> elements, CustomForm form) {
         super(handler, "");
         this.elements = elements;
         this.form = form;
@@ -34,7 +37,9 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * Check if there is an element with id 
      */
     public boolean containsId(String elementId) {
-        return elements.stream().anyMatch(element -> elementId.equals(element.getElementId()));
+        return elements.stream().anyMatch(element ->
+                element instanceof ElementIdentifiable elementIdentifiable &&
+                elementId.equals(elementIdentifiable.getElementId()));
     }
 
     /**
@@ -42,8 +47,12 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @param index Element index
      * @return CustomElement
      */
-    public CustomElement getElement(int index) {
+    public ElementCustom getElement(int index) {
         return elements.get(index);
+    }
+
+    public <T extends ElementCustom> T getElement(int index, Class<T> clazz) {
+        return clazz.cast(this.getElement(index));
     }
 
     /**
@@ -51,18 +60,20 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @param elementId Element identifier
      * @return CustomElement
      */
-    public CustomElement getElement(String elementId) {
+    public ElementCustom getElement(String elementId) {
         return elements.stream()
-            .filter(element -> elementId.equals(element.getElementId()))
+            .filter(element ->
+                    element instanceof ElementIdentifiable elementIdentifiable &&
+                    elementId.equals(elementIdentifiable.getElementId()))
             .findFirst()
             .orElse(null);
     }
 
-    public <T extends CustomElement> T getElement(String elementId, Class<T> clazz) {
-        return clazz.cast(getElement(elementId));
+    public <T extends ElementCustom> T getElement(String elementId, Class<T> clazz) {
+        return clazz.cast(this.getElement(elementId));
     }
 
-    public <T extends CustomElement> List<T> getElements(Class<T> clazz) {
+    public <T extends ElementCustom> List<T> getElements(Class<T> clazz) {
         return elements.stream()
             .filter(clazz::isInstance)
             .map(clazz::cast)
@@ -75,7 +86,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Label
      */
     public Label getLabel(int index) {
-        return (Label) getElement(index);
+        return this.getElement(index, Label.class);
     }
 
     /**
@@ -84,7 +95,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Label
      */
     public Label getLabel(String elementId) {
-        return getElement(elementId, Label.class);
+        return this.getElement(elementId, Label.class);
     }
 
     /**
@@ -92,7 +103,59 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<Label>
      */
     public List<Label> getLabels() {
-        return getElements(Label.class);
+        return this.getElements(Label.class);
+    }
+
+    /**
+     * Get Divider by index
+     * @param index Divider index
+     * @return Divider
+     */
+    public Divider getDivider(int index) {
+        return this.getElement(index, Divider.class);
+    }
+
+    /**
+     * Get Divider by element id
+     * @param elementId Divider identifier
+     * @return Divider
+     */
+    public Divider getDivider(String elementId) {
+        return this.getElement(elementId, Divider.class);
+    }
+
+    /**
+     * Get all dividers
+     * @return List<Divider>
+     */
+    public List<Divider> getDividers() {
+        return this.getElements(Divider.class);
+    }
+
+    /**
+     * Get Divider by index
+     * @param index Divider index
+     * @return Divider
+     */
+    public Header getHeader(int index) {
+        return this.getElement(index, Header.class);
+    }
+
+    /**
+     * Get Divider by element id
+     * @param elementId Divider identifier
+     * @return Divider
+     */
+    public Header getHeader(String elementId) {
+        return this.getElement(elementId, Header.class);
+    }
+
+    /**
+     * Get all headers
+     * @return List<Header>
+     */
+    public List<Header> getHeaders() {
+        return this.getElements(Header.class);
     }
 
     /**
@@ -101,7 +164,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Input
      */
     public Input getInput(int index) {
-        return (Input) getElement(index);
+        return this.getElement(index, Input.class);
     }
 
     /**
@@ -110,7 +173,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Input
      */
     public Input getInput(String elementId) {
-        return getElement(elementId, Input.class);
+        return this.getElement(elementId, Input.class);
     }
 
     /**
@@ -118,7 +181,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<Input>
      */
     public List<Input> getInputs() {
-        return getElements(Input.class);
+        return this.getElements(Input.class);
     }
 
     /**
@@ -127,7 +190,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Toggle
      */
     public Toggle getToggle(int index) {
-        return (Toggle) getElement(index);
+        return this.getElement(index, Toggle.class);
     }
 
     /**
@@ -136,7 +199,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Toggle
      */
     public Toggle getToggle(String elementId) {
-        return getElement(elementId, Toggle.class);
+        return this.getElement(elementId, Toggle.class);
     }
 
     /**
@@ -144,7 +207,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<Toggle>
      */
     public List<Toggle> getToggles() {
-        return getElements(Toggle.class);
+        return this.getElements(Toggle.class);
     }
 
     /**
@@ -153,7 +216,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Slider
      */
     public Slider getSlider(int index) {
-        return (Slider) getElement(index);
+        return this.getElement(index, Slider.class);
     }
 
     /**
@@ -162,7 +225,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Slider
      */
     public Slider getSlider(String elementId) {
-        return getElement(elementId, Slider.class);
+        return this.getElement(elementId, Slider.class);
     }
 
     /**
@@ -170,7 +233,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<Slider>
      */
     public List<Slider> getSliders() {
-        return getElements(Slider.class);
+        return this.getElements(Slider.class);
     }
 
     /**
@@ -179,7 +242,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return StepSlider
      */
     public StepSlider getStepSlider(int index) {
-        return (StepSlider) getElement(index);
+        return this.getElement(index, StepSlider.class);
     }
 
     /**
@@ -188,7 +251,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return StepSlider
      */
     public StepSlider getStepSlider(String elementId) {
-        return getElement(elementId, StepSlider.class);
+        return this.getElement(elementId, StepSlider.class);
     }
 
     /**
@@ -196,7 +259,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<StepSlider>
      */
     public List<StepSlider> getStepSliders() {
-        return getElements(StepSlider.class);
+        return this.getElements(StepSlider.class);
     }
 
     /**
@@ -205,7 +268,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Dropdown
      */
     public Dropdown getDropdown(int index) {
-        return (Dropdown) getElement(index);
+        return this.getElement(index, Dropdown.class);
     }
 
     /**
@@ -214,7 +277,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return Dropdown
      */
     public Dropdown getDropdown(String elementId) {
-        return getElement(elementId, Dropdown.class);
+        return this.getElement(elementId, Dropdown.class);
     }
 
     /**
@@ -222,7 +285,7 @@ public class CustomFormResponse extends FormResponse<CustomFormHandler> {
      * @return List<Dropdown>
      */
     public List<Dropdown> getDropdowns() {
-        return getElements(Dropdown.class);
+        return this.getElements(Dropdown.class);
     }
 
     @Override

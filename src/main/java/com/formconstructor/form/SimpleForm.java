@@ -1,23 +1,34 @@
 package com.formconstructor.form;
 
+import cn.nukkit.network.protocol.ProtocolInfo;
+import com.formconstructor.form.element.ElementSimple;
+import com.formconstructor.form.element.general.Divider;
+import com.formconstructor.form.element.general.Header;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.element.simple.Button;
 import com.formconstructor.form.element.simple.ImageType;
-import com.formconstructor.form.handler.CloseFormHandler;
 import com.formconstructor.form.handler.SimpleFormHandler;
 import com.formconstructor.form.response.SimpleFormResponse;
+import com.google.gson.*;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @Getter
 public class SimpleForm extends CloseableForm {
 
+    private static final Gson GSON_LEGACY = new GsonBuilder().registerTypeAdapter(SimpleForm.class, new SimpleFormLegacySerializer()).create();
+
     private String title;
     private String content;
-    private final List<Button> buttons = new ArrayList<>();
+
+    private final List<ElementSimple> elements = new ArrayList<>();
     
     private transient SimpleFormResponse response;
 
@@ -30,22 +41,9 @@ public class SimpleForm extends CloseableForm {
     }
 
     public SimpleForm(String title, String content) {
-        this(title, content, null);
-    }
-
-    public SimpleForm(String title, String content, CloseFormHandler closeHandler) {
-        this(title, content, closeHandler, null);
-    }
-
-    public SimpleForm(String title, String content, CloseFormHandler closeHandler, Collection<Button> buttons) {
         super(FormType.SIMPLE);
         this.title = title;
         this.content = content;
-        this.setCloseHandler(closeHandler);
-
-        if (buttons != null) {
-            this.buttons.addAll(buttons);
-        }
     }
 
     /**
@@ -79,12 +77,38 @@ public class SimpleForm extends CloseableForm {
     }
 
     /**
+     * Add form header element
+     * @param header Header text
+     * @return SimpleForm
+     */
+    public SimpleForm addHeader(String header) {
+        return this.addElement(new Header(header));
+    }
+
+    /**
+     * Add form label element
+     * @param label Label text
+     * @return SimpleForm
+     */
+    public SimpleForm addLabel(String label) {
+        return this.addElement(new Label(label));
+    }
+
+    /**
+     * Add form divider element
+     * @return SimpleForm
+     */
+    public SimpleForm addDivider() {
+        return this.addElement(new Divider());
+    }
+
+    /**
      * Add a button to the form
      * @param name Button name
      * @return SimpleForm
      */
     public SimpleForm addButton(String name) {
-        return addButton(name, null);
+        return this.addButton(name, null);
     }
 
     /**
@@ -94,7 +118,7 @@ public class SimpleForm extends CloseableForm {
      * @return SimpleForm
      */
     public SimpleForm addButton(String name, SimpleFormHandler handler) {
-        return addButton(name, ImageType.PATH, "", handler);
+        return this.addButton(name, ImageType.PATH, "", handler);
     }
 
     /**
@@ -105,7 +129,7 @@ public class SimpleForm extends CloseableForm {
      * @return SimpleForm
      */
     public SimpleForm addButton(String name, ImageType imageType, String path) {
-        return addButton(name, imageType, path, null);
+        return this.addButton(name, imageType, path, null);
     }
 
     /**
@@ -117,7 +141,7 @@ public class SimpleForm extends CloseableForm {
      * @return SimpleForm
      */
     public SimpleForm addButton(String name, ImageType imageType, String path, SimpleFormHandler handler) {
-        return addButton(new Button(name, imageType, path, handler));
+        return this.addButton(new Button(name, imageType, path, handler));
     }
 
     /**
@@ -126,8 +150,7 @@ public class SimpleForm extends CloseableForm {
      * @return SimpleForm
      */
     public SimpleForm addButton(Button button) {
-        this.buttons.add(button);
-        return this;
+        return this.addElement(button);
     }
 
     /**
@@ -150,11 +173,26 @@ public class SimpleForm extends CloseableForm {
         return this;
     }
 
+    /**
+     * Add an element to the form
+     * @param element ElementSimple
+     * @return SimpleForm
+     */
+    public SimpleForm addElement(ElementSimple element) {
+        this.elements.add(element);
+        return this;
+    }
+
     @Override
     public void setResponse(String data) {
         if (data.equals("null")) {
             return;
         }
+
+        List<Button> buttons = elements.stream()
+                .filter(element -> element instanceof Button)
+                .map(element -> (Button) element)
+                .toList();
     
         int buttonId;
         try {
@@ -167,11 +205,30 @@ public class SimpleForm extends CloseableForm {
             this.response = new SimpleFormResponse(new Button("Invalid", (p, b) -> send(p)));
             return;
         }
-    
-        for (int index = 0; index < buttons.size(); index++) {
-            buttons.get(index).setIndex(index);
-        }
 
         this.response = new SimpleFormResponse(buttons.get(buttonId));
+    }
+
+    @Override
+    public String toJson(int protocol) {
+        if (protocol >= ProtocolInfo.v1_21_70_24) {
+            return GSON.toJson(this);
+        }
+        return GSON_LEGACY.toJson(this);
+    }
+
+    public static class SimpleFormLegacySerializer implements JsonSerializer<SimpleForm> {
+        @Override
+        public JsonElement serialize(SimpleForm src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonObject = JsonParser.parseString(GSON.toJson(src)).getAsJsonObject();
+
+            List<ElementSimple> filteredButtons = src.elements.stream()
+                    .filter(e -> e instanceof Button)
+                    .toList();
+
+            jsonObject.remove("elements");
+            jsonObject.add("buttons", context.serialize(filteredButtons));
+            return jsonObject;
+        }
     }
 }

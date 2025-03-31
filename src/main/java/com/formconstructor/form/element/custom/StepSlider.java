@@ -1,5 +1,7 @@
 package com.formconstructor.form.element.custom;
 
+import com.formconstructor.form.element.ElementCustom;
+import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.SelectableElement;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class StepSlider extends CustomElement {
+public class StepSlider extends ElementIdentifiable implements ElementCustom {
 
     @SerializedName("default")
     private int defaultIndex;
