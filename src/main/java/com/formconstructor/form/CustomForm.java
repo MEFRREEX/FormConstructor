@@ -29,21 +29,12 @@ public class CustomForm extends CloseableForm {
     private transient CustomFormResponse response;
 
     public CustomForm() {
-        this("", null);
+        this("");
     }
 
     public CustomForm(String title) {
-        this(title, null);
-    }
-
-    public CustomForm(CustomFormHandler handler) {
-        this("", handler);
-    }
-
-    public CustomForm(String title, CustomFormHandler handler) {
         super(FormType.CUSTOM);
         this.title = title;
-        this.handler = handler;
     }
 
     /**
