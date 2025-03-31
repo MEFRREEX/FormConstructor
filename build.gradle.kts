@@ -4,11 +4,13 @@ plugins {
 }
 
 group = "com.mefrreex.formconstructor"
-description = "formconstructor"
-version = "2.0.5"
+version = "2.1.0"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
     mavenCentral()
@@ -32,7 +34,7 @@ tasks.withType<Javadoc> {
 }
 
 tasks.withType<ProcessResources> {
-    filesMatching("*.yml") {
+    filesMatching("plugin.yml") {
         expand(project.properties)
     }
 }
