@@ -61,7 +61,7 @@ public abstract class Form {
      *
      * @param data The raw response data
      */
-    public abstract void setResponse(String data);
+    public abstract void setResponse(int protocol, String data);
 
     /**
      * Gets the parsed form response.

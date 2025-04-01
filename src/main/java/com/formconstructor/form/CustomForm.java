@@ -1,5 +1,6 @@
 package com.formconstructor.form;
 
+import cn.nukkit.network.protocol.ProtocolInfo;
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.general.Label;
@@ -109,23 +110,26 @@ public class CustomForm extends CloseableForm {
      * @param data The raw response data from client
      */
     @Override
-    public void setResponse(String data) {
+    public void setResponse(int protocol, String data) {
         if (data.equals("null")) {
             return;
         }
 
         Object[] result = new Gson().fromJson(data, Object[].class);
 
-        for (int i = 0; i < elements.size(); i++) {
-            ElementCustom element = elements.get(i);
-
-            if (!element.respond(result[i])) {
+        int index = 0;
+        for (ElementCustom element : elements) {
+            if (!element.respond(result[index])) {
                 this.response = new CustomFormResponse((player, response) -> send(player), elements, this);
                 return;
             }
 
             if (element instanceof ValidationField && this.validated && !((ValidationField) element).isValidated()) {
                 this.validated = false;
+            }
+
+            if (!(element instanceof Label) || protocol < ProtocolInfo.v1_21_70_24) {
+                index++;
             }
         }
 

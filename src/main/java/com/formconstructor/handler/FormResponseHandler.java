@@ -25,7 +25,7 @@ public class FormResponseHandler implements Listener {
             if (storedForm != null) {
                 try {
                     String formData = packet.data;
-                    storedForm.setResponse(formData != null ? formData.trim() : null);
+                    storedForm.setResponse(player.protocol, formData != null ? formData.trim() : null);
 
                     FormCancelReason cancelReason = FormCancelReason.values()[packet.cancelReason];
                     FormHandlingTask formHandlingTask = new FormHandlingTask(storedForm, storedForm.getResponse(), cancelReason, player);

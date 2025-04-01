@@ -123,7 +123,7 @@ public class ModalForm extends CloseableForm {
      * @param data The raw response data from client
      */
     @Override
-    public void setResponse(String data) {
+    public void setResponse(int protocol, String data) {
         if (!data.equals("null") && handler != null) {
             this.response = new ModalFormResponse(handler, data);
         }

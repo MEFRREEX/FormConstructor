@@ -219,7 +219,7 @@ public class SimpleForm extends CloseableForm {
      * @param data The raw response data
      */
     @Override
-    public void setResponse(String data) {
+    public void setResponse(int protocol, String data) {
         if (data.equals("null")) {
             return;
         }
