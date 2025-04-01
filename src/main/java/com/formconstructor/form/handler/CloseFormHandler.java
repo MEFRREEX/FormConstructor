@@ -1,6 +1,7 @@
 package com.formconstructor.form.handler;
 
 import cn.nukkit.Player;
+import com.formconstructor.form.FormCancelReason;
 
 /**
  * Handler for processing when a form is closed without submission.
@@ -12,5 +13,5 @@ public interface CloseFormHandler extends FormHandler {
      *
      * @param player The player who closed the form
      */
-    void handle(Player player);
+    void handle(Player player, FormCancelReason reason);
 }

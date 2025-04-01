@@ -1,12 +1,12 @@
 package com.formconstructor.event.form;
 
 import cn.nukkit.Player;
-import com.formconstructor.event.EventCaller;
-import com.formconstructor.form.Form;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
-import lombok.Setter;
+import com.formconstructor.event.EventCaller;
+import com.formconstructor.form.Form;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents the event of sending in a player's form.
@@ -14,12 +14,12 @@ import lombok.Getter;
 @Getter
 @Setter
 public class PlayerFormSendEvent extends FormEvent implements Cancellable, EventCaller {
- 
-    private final Player player;
-    private boolean async;
 
     @Getter
     private static final HandlerList handlers = new HandlerList();
+
+    private final Player player;
+    private boolean async;
 
     public PlayerFormSendEvent(Player player, Form form, boolean async) {
         super(form);

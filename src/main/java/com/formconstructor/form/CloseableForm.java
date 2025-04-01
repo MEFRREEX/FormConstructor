@@ -22,6 +22,7 @@ public abstract class CloseableForm extends Form {
 
     /**
      * Sets the handler for form close events.
+     *
      * @param closeHandler The handler to be called when form is closed
      * @return This form instance for method chaining
      */

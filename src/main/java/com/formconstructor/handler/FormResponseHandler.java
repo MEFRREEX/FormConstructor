@@ -9,6 +9,7 @@ import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.network.protocol.ModalFormResponsePacket;
 import com.formconstructor.FormConstructor;
 import com.formconstructor.form.Form;
+import com.formconstructor.form.FormCancelReason;
 import com.formconstructor.service.FormService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +27,8 @@ public class FormResponseHandler implements Listener {
                     String formData = packet.data;
                     storedForm.setResponse(formData != null ? formData.trim() : null);
 
-                    FormHandlingTask formHandlingTask = new FormHandlingTask(storedForm, storedForm.getResponse(), player);
+                    FormCancelReason cancelReason = FormCancelReason.values()[packet.cancelReason];
+                    FormHandlingTask formHandlingTask = new FormHandlingTask(storedForm, storedForm.getResponse(), cancelReason, player);
                     if (storedForm.isAsync()) {
                         Server.getInstance().getScheduler().scheduleAsyncTask(FormConstructor.getInstance(), formHandlingTask);
                     } else {
