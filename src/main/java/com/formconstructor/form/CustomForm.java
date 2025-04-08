@@ -119,6 +119,11 @@ public class CustomForm extends CloseableForm {
 
         int index = 0;
         for (ElementCustom element : elements) {
+            // For compatibility with older versions of responses before 1.21.70
+            if (element instanceof Label && protocol >= ProtocolInfo.v1_21_70_24) {
+                continue;
+            }
+
             if (!element.respond(result[index])) {
                 this.response = new CustomFormResponse((player, response) -> send(player), elements, this);
                 return;
@@ -128,9 +133,7 @@ public class CustomForm extends CloseableForm {
                 this.validated = false;
             }
 
-            if (!(element instanceof Label) || protocol < ProtocolInfo.v1_21_70_24) {
-                index++;
-            }
+            index++;
         }
 
         this.response = new CustomFormResponse(handler, elements, this);
