@@ -119,8 +119,8 @@ public class CustomForm extends CloseableForm {
 
         int index = 0;
         for (ElementCustom element : elements) {
-            // For compatibility with older versions of responses before 1.21.70
-            if (element instanceof Label && protocol >= ProtocolInfo.v1_21_70_24) {
+            // For compatibility with responses between versions 1.21.70 and 1.21.80. Mojang wtf?
+            if (element instanceof Label && protocol >= ProtocolInfo.v1_21_70_24 && protocol < ProtocolInfo.v1_21_80) {
                 continue;
             }
 
