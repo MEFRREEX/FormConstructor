@@ -16,6 +16,8 @@ public interface FormService {
 
     void sendForm(Player player, Form form, int formId);
 
+    void sendUpdate(Player player, Form form);
+
     void closeForms(Player player);
 
     int getNextFormId();

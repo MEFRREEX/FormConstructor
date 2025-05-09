@@ -3,12 +3,16 @@ package com.formconstructor.service;
 import cn.nukkit.Player;
 import cn.nukkit.network.protocol.ClientboundCloseFormPacket;
 import cn.nukkit.network.protocol.ModalFormRequestPacket;
+import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
 import com.formconstructor.form.Form;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public class FormServiceImpl implements FormService {
 
     private final AtomicInteger nextFormId = new AtomicInteger();
@@ -41,6 +45,26 @@ public class FormServiceImpl implements FormService {
         ModalFormRequestPacket packet = new ModalFormRequestPacket();
         packet.formId = formId;
         packet.data = form.toJson(player.protocol);
+        player.dataPacket(packet);
+    }
+
+    @Override
+    public void sendUpdate(Player player, Form form) {
+        Optional<Integer> formId = storedForms.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(form))
+                .map(Map.Entry::getKey)
+                .findFirst();
+
+        if (formId.isEmpty()) {
+            log.warn("Attempting to update a non-existing form for a player {}", player.getName());
+            return;
+        }
+
+        // Exploiting some (probably unintended) protocol features here
+        // Thanks to https://github.com/PowerNukkitX/PowerNukkitX for this code!
+        ServerSettingsResponsePacket packet = new ServerSettingsResponsePacket();
+        packet.formId = formId.get();
+        packet.data = form.toJson();
         player.dataPacket(packet);
     }
 
