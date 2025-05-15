@@ -261,7 +261,7 @@ public class SimpleForm extends CloseableForm {
     /**
      * Custom JSON serializer for legacy protocol versions.
      */
-    public static class SimpleFormLegacySerializer implements JsonSerializer<SimpleForm> {
+    private static class SimpleFormLegacySerializer implements JsonSerializer<SimpleForm> {
         @Override
         public JsonElement serialize(SimpleForm src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jsonObject = JsonParser.parseString(GSON.toJson(src)).getAsJsonObject();

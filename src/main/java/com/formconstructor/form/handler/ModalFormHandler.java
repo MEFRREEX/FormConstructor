@@ -5,6 +5,7 @@ import cn.nukkit.Player;
 /**
  * Handler for processing modal form submissions.
  */
+@FunctionalInterface
 public interface ModalFormHandler extends FormHandler {
 
     /**
