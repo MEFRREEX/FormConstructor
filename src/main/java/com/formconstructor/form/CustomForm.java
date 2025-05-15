@@ -27,6 +27,9 @@ public class CustomForm extends CloseableForm {
     @SerializedName("content")
     private final List<ElementCustom> elements = new ArrayList<>();
 
+    @SerializedName("submit")
+    private String submitButton;
+
     @Getter
     private transient boolean validated = true;
     private transient CustomFormHandler handler;
@@ -57,6 +60,16 @@ public class CustomForm extends CloseableForm {
      */
     public CustomForm setTitle(String title) {
         this.title = title;
+        return this;
+    }
+    /**
+     * Sets the text on the form submit button.
+     *
+     * @param submitButton Text on the form submit button
+     * @return This form instance for chaining
+     */
+    public CustomForm setSubmitButton(String submitButton) {
+        this.submitButton = submitButton;
         return this;
     }
 
