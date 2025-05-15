@@ -1,6 +1,7 @@
 package com.formconstructor.form;
 
 import com.formconstructor.form.handler.CloseFormHandler;
+import com.formconstructor.form.handler.CloseReasonFormHandler;
 import lombok.Getter;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Getter;
 @Getter
 public abstract class CloseableForm extends Form {
 
-    private transient CloseFormHandler closeHandler;
+    private transient CloseReasonFormHandler closeHandler;
 
     /**
      * Creates a new closeable form of specified type.
@@ -21,12 +22,22 @@ public abstract class CloseableForm extends Form {
     }
 
     /**
-     * Sets the handler for form close events.
+     * Sets a handler without a reason handling for the form close event.
      *
      * @param closeHandler The handler to be called when form is closed
      * @return This form instance for method chaining
      */
     public CloseableForm setCloseHandler(CloseFormHandler closeHandler) {
+        return this.setCloseHandler(CloseReasonFormHandler.withoutReason(closeHandler));
+    }
+
+    /**
+     * Sets a handler with a reason for the form close event.
+     *
+     * @param closeHandler The handler to be called when form is closed
+     * @return This form instance for method chaining
+     */
+    public CloseableForm setCloseHandler(CloseReasonFormHandler closeHandler) {
         this.closeHandler = closeHandler;
         return this;
     }

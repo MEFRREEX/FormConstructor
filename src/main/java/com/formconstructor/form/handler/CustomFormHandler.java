@@ -7,6 +7,7 @@ import com.formconstructor.form.response.CustomFormResponse;
  * Handler for processing custom form submissions.
  * Provides access to all form elements and validation results.
  */
+@FunctionalInterface
 public interface CustomFormHandler extends FormHandler {
 
     /**

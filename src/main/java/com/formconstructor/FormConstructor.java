@@ -1,6 +1,7 @@
 package com.formconstructor;
 
 import cn.nukkit.plugin.PluginBase;
+import com.formconstructor.form.SimpleForm;
 import com.formconstructor.handler.FormResponseHandler;
 import com.formconstructor.service.FormService;
 import com.formconstructor.service.FormServiceImpl;
@@ -23,5 +24,11 @@ public class FormConstructor extends PluginBase {
     public void onEnable() {
         this.formService = new FormServiceImpl();
         this.getServer().getPluginManager().registerEvents(new FormResponseHandler(), this);
+
+        SimpleForm form = new SimpleForm();
+
+        form.setCloseHandler((pl, r) -> {
+
+        });
     }
 }

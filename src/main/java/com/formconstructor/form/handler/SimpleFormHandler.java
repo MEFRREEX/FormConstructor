@@ -6,6 +6,7 @@ import com.formconstructor.form.element.simple.Button;
 /**
  * Handler for processing simple form submissions.
  */
+@FunctionalInterface
 public interface SimpleFormHandler extends FormHandler {
 
     /**

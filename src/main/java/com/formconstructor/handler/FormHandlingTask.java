@@ -6,7 +6,7 @@ import com.formconstructor.event.form.PlayerFormCloseEvent;
 import com.formconstructor.form.CloseableForm;
 import com.formconstructor.form.Form;
 import com.formconstructor.form.FormCancelReason;
-import com.formconstructor.form.handler.CloseFormHandler;
+import com.formconstructor.form.handler.CloseReasonFormHandler;
 import com.formconstructor.form.response.CustomFormResponse;
 import com.formconstructor.form.response.FormResponse;
 import com.formconstructor.form.response.ModalFormResponse;
@@ -29,7 +29,7 @@ public class FormHandlingTask extends AsyncTask {
     @Override
     public void onRun() {
         if (response == null && form instanceof CloseableForm closeableForm) {
-            CloseFormHandler closeHandler = closeableForm.getCloseHandler();
+            CloseReasonFormHandler closeHandler = closeableForm.getCloseHandler();
 
             PlayerFormCloseEvent event = new PlayerFormCloseEvent(player, form, cancelReason);
             event.callEvent();
