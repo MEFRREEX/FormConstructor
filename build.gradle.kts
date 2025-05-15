@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.mefrreex.formconstructor"
-version = "2.1.7"
+version = "2.1.8"
 
 java {
     toolchain {
