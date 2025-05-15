@@ -3,12 +3,14 @@ package com.formconstructor.form;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
-import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.element.custom.validator.ValidationField;
+import com.formconstructor.form.element.general.Divider;
+import com.formconstructor.form.element.general.Header;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.handler.CustomFormHandler;
 import com.formconstructor.form.response.CustomFormResponse;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -120,7 +122,8 @@ public class CustomForm extends CloseableForm {
         int index = 0;
         for (ElementCustom element : elements) {
             // For compatibility with responses between versions 1.21.70 and 1.21.80. Mojang wtf?
-            if (element instanceof Label && protocol >= ProtocolInfo.v1_21_70_24 && protocol < ProtocolInfo.v1_21_80) {
+            if ((element instanceof Label || element instanceof Header || element instanceof Divider) &&
+                protocol >= ProtocolInfo.v1_21_70_24 && protocol < ProtocolInfo.v1_21_80) {
                 continue;
             }
 
