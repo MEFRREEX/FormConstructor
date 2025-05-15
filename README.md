@@ -1,7 +1,7 @@
-![logo](https://raw.githubusercontent.com/MEFRREEX/FormConstructor/master/.github/logo_v2.png)
+![logo](.github/logo_v3.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-2.0.1-brightgreen)](https://github.com/MEFRREEX/FormConstructor/releases/tag/2.0.1)
+[![Version](https://img.shields.io/badge/Version-3.0.0-brightgreen)](https://github.com/MEFRREEX/FormConstructor/releases/tag/2.0.1)
 [![Jitpack](https://jitpack.io/v/MEFRREEX/FormConstructor.svg)](https://jitpack.io/#MEFRREEX/FormConstructor)
 [![CloudBurst](https://img.shields.io/badge/CloudBurst-2.0.1-brightgreen)](https://cloudburstmc.org/resources/formconstructor-v2.957)
 
@@ -16,6 +16,7 @@ It has a few key advantages over other form libraries:
 - In CustomForm we can mark elements with an identifier to conveniently get this element in its handler. We can get element by id and its index.
 - For each form we can set its closing handler.
 - Easy async handling.
+- Dynamic form update.
 
 ## 🛠 Examples
 
@@ -27,17 +28,21 @@ SimpleForm form = new SimpleForm("Sample title");
 form.addContent("New content line");
     
 // Easiest way to add a button
-form.addButton("Button", (pl, b) -> {
-        pl.sendMessage("Button clicked: " + b.getName() + " (" + b.getIndex() + ")");
+form.addHeader("Header text")
+    .addDivider()
+    .addButton("Button", (pl, b) -> {
+        pl.sendMessage("Button clicked: " + b.getName());
     })
+    .addLabel("Here's a button with an image")
     // Button with image
     .addButton("Button with image", ImageType.PATH, "textures/items/diamond")
     // Another way to add a button
     .addButton(new Button("Another button")
         .setImage(ImageType.PATH, "textures/blocks/stone")
         .onClick((pl, b) -> {
-            pl.sendMessage("Another button clicked: " + b.getName() + " (" + b.getIndex() + ")");
-        }));
+            pl.sendMessage("Another button clicked: " + b.getName());
+        }))
+    .addLabel("Yes, we can add labels anywhere!");
 
 // Setting the form close handler
 form.setCloseHandler(pl -> {
@@ -46,6 +51,7 @@ form.setCloseHandler(pl -> {
 
 form.send(player);
 ```
+![simple_form_example.png](.github/examples/simple_form_example.png)
 
 Creating a ModalForm:
 
@@ -62,10 +68,14 @@ form.setHandler((pl, result) -> {
     pl.sendMessage("You clicked " + (result ? "correct" : "wrong") + " button!");
 });
 
-// Setting the form close handler
-form.setCloseHandler(pl -> pl.sendMessage("You closed the form!"));
+// Setting the form close reason handler
+form.setCloseHandler((pl, reason) -> {
+    pl.sendMessage("You closed the form with reason " + reason);
+});
+        
 form.send(player);
 ```
+![modal_form_example.png](.github/examples/modal_form_example.png)
 
 Creating a CustomForm:
 
@@ -80,7 +90,9 @@ List<SelectableElement> elements = List.of(
     new SelectableElement("Option with value", 15)
 );
 
-form.addElement("Test label")
+form.addElement(new Header("My Header"))
+    .addElement("Test label")
+    .addElement(new Divider())
     .addElement("input", new Input("Input")
         .setPlaceholder("Text")
         .setDefaultValue("Default value"))
@@ -95,6 +107,10 @@ form.addElement("Test label")
         .addElement("Element 3"))
     .addElement("dropdown1", new Dropdown("Second dropdown", elements))
     .addElement("toggle", new Toggle("Toggle"));
+
+// Set the text of the submit button
+// You can also set the key from the resource pack to this button
+form.setSubmitButton("My Submit Button"); 
 
 // Setting the form handler
 form.setHandler((pl, response) -> {
@@ -115,6 +131,26 @@ form.setHandler((pl, response) -> {
 
 form.send(player);
 ```
+![custom_form_example_1.png](.github/examples/custom_form_example_1.png)
+![custom_form_example_2.png](.github/examples/custom_form_example_2.png)
+
+Creating an updatable form:
+
+```java
+SimpleForm form = new SimpleForm("Sample title");
+
+AtomicInteger counter = new AtomicInteger();
+
+// For example, let's create a task that will increment the counter by 1 every second
+Server.getInstance().getScheduler().scheduleRepeatingTask(() -> {
+    form.setContent("Count is " + counter.get()); // Set form content
+    form.sendUpdate(player); // Send a form update
+    counter.getAndIncrement();
+}, 20);
+
+form.send(player);
+```
+Note, this works with any type and content of form.
 
 ### Async handling
 Also you can use method `sendAsync(player)` or `send(player, true)` for using async form handling.

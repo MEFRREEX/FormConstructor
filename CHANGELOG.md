@@ -1,3 +1,15 @@
+# 3.0.0
+1. Removed useless [constructors](https://github.com/MEFRREEX/FormConstructor/commit/a5ebafd0ae5fc3f7c9fb7a21d036b05662543814) and [methods](https://github.com/MEFRREEX/FormConstructor/commit/d080f3d4906064d439e0c6597dc6e5e6f1cb951a) from CustomForm, ModalForm
+2. Removed dependence on Nukkit forms + added FormService class
+3. New form elements (Header & Divider)
+4. Removed useless method `Element#getIndex()`
+5. Added `FormService#closeForms(Player player)` method
+6. Moved `PlayerFormCloseEvent` and `PlayerFormSendEvent` event classes
+7. Added method `ClosableForm#setCloseHandler(CloseReasonFormHandler closeHandler)`
+8. Added method `Form#sendUpdate(Player player)` for form update
+9. Added method `CustomForm#setSubmitButton(String submitButton)` to change submit button text
+10. Added support for 1.21.70x and 1.21.80x
+
 # 2.0.3
 1. Renamed ButtonImage to ImageData
 2. Added method `setImage(Image image)` in Button class
