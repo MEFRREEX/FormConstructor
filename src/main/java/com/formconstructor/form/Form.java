@@ -19,6 +19,9 @@ public abstract class Form {
     private final FormType type;
     private transient boolean async;
 
+    /**
+     * Creates a form with type.
+     */
     public Form(FormType type) {
         this.type = type;
     }
@@ -57,8 +60,18 @@ public abstract class Form {
     }
 
     /**
+     * Sends the form update to a player.
+     *
+     * @param player The player to send the form update to
+     */
+    public void sendUpdate(Player player) {
+        FormService.getInstance().sendUpdate(player, this);
+    }
+
+    /**
      * Sets the form response from raw data.
      *
+     * @param protocol The response protocol version
      * @param data The raw response data
      */
     public abstract void setResponse(int protocol, String data);
