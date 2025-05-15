@@ -51,7 +51,9 @@ form.setCloseHandler(pl -> {
 
 form.send(player);
 ```
-![simple_form_example.png](.github/examples/simple_form_example.png)
+<div align="center">
+  <img src=".github/examples/simple_form_example.png" width="75%">
+</div>
 
 Creating a ModalForm:
 
@@ -75,7 +77,9 @@ form.setCloseHandler((pl, reason) -> {
         
 form.send(player);
 ```
-![modal_form_example.png](.github/examples/modal_form_example.png)
+<div align="center">
+  <img src=".github/examples/modal_form_example.png" width="75%">
+</div>
 
 Creating a CustomForm:
 
@@ -131,8 +135,10 @@ form.setHandler((pl, response) -> {
 
 form.send(player);
 ```
-![custom_form_example_1.png](.github/examples/custom_form_example_1.png)
-![custom_form_example_2.png](.github/examples/custom_form_example_2.png)
+<div align="center">
+  <img src=".github/examples/custom_form_example_1.png" width="75%">
+  <img src=".github/examples/custom_form_example_2.png" width="75%">
+</div>
 
 Creating an updatable form:
 
