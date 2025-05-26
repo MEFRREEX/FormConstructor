@@ -4,21 +4,21 @@ plugins {
 }
 
 group = "com.mefrreex.formconstructor"
-description = "formconstructor"
-version = "2.0.5"
+version = "3.0.0"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
     mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://repo.opencollab.dev/maven-releases/")
-    maven("https://repo.opencollab.dev/maven-snapshots/")
+    maven("https://repo.lanink.cn/repository/maven-public/")
 }
 
 dependencies {
-    compileOnly("cn.nukkit:nukkit:1.0-SNAPSHOT")
+    compileOnly("cn.nukkit:Nukkit:MOT-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
@@ -32,7 +32,7 @@ tasks.withType<Javadoc> {
 }
 
 tasks.withType<ProcessResources> {
-    filesMatching("*.yml") {
+    filesMatching("plugin.yml") {
         expand(project.properties)
     }
 }

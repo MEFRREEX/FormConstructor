@@ -1,11 +1,13 @@
 package com.formconstructor.form.element.simple;
 
-import com.formconstructor.form.element.FormElement;
+import com.formconstructor.form.element.Element;
+import com.formconstructor.form.element.ElementSimple;
+import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.handler.SimpleFormHandler;
 import lombok.Getter;
 
 @Getter 
-public class Button extends FormElement {
+public class Button extends Element implements ElementSimple {
 
     private ImageData image;
     
@@ -28,7 +30,7 @@ public class Button extends FormElement {
     }
 
     public Button(String name, ImageType imageType, String image, SimpleFormHandler handler) {
-        super(name);
+        super(name, ElementType.BUTTON);
         this.image = new ImageData(imageType, image);
         this.handler = handler;
     }

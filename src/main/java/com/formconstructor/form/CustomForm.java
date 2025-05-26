@@ -1,112 +1,146 @@
 package com.formconstructor.form;
 
-import cn.nukkit.Player;
-import com.formconstructor.form.element.custom.CustomElement;
-import com.formconstructor.form.element.custom.Label;
+import cn.nukkit.network.protocol.ProtocolInfo;
+import com.formconstructor.form.element.ElementCustom;
+import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.custom.validator.ValidationField;
+import com.formconstructor.form.element.general.Divider;
+import com.formconstructor.form.element.general.Header;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.handler.CustomFormHandler;
 import com.formconstructor.form.response.CustomFormResponse;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a custom form with inputs, toggles, dropdowns etc.
+ */
 @Getter
 public class CustomForm extends CloseableForm {
 
     private String title;
 
     @SerializedName("content")
-    private final List<CustomElement> elements = new ArrayList<>();
+    private final List<ElementCustom> elements = new ArrayList<>();
+
+    @SerializedName("submit")
+    private String submitButton;
 
     @Getter
     private transient boolean validated = true;
-
     private transient CustomFormHandler handler;
     private transient CustomFormResponse response;
 
+    /**
+     * Creates an empty custom form.
+     */
     public CustomForm() {
-        this("", null);
-    }
-
-    public CustomForm(String title) {
-        this(title, null);
-    }
-
-    public CustomForm(CustomFormHandler handler) {
-        this("", handler);
-    }
-
-    public CustomForm(String title, CustomFormHandler handler) {
-        super(FormType.CUSTOM);
-        this.title = title;
-        this.handler = handler;
+        this("");
     }
 
     /**
-     * Set form title
-     * @param title Text
-     * @return SimpleForm
+     * Creates a custom form with title.
+     *
+     * @param title The form title
+     */
+    public CustomForm(String title) {
+        super(FormType.CUSTOM);
+        this.title = title;
+    }
+
+    /**
+     * Sets the form title.
+     *
+     * @param title The title text
+     * @return This form instance for chaining
      */
     public CustomForm setTitle(String title) {
         this.title = title;
         return this;
     }
-
     /**
-     * Add text element
-     * @param text Text
-     * @return CustomForm
+     * Sets the text on the form submit button.
+     *
+     * @param submitButton Text on the form submit button
+     * @return This form instance for chaining
      */
-    public CustomForm addElement(String text) {
-        return addElement(new Label(text));
-    }
-
-    /**
-     * Add form element
-     * @param element CustomElement
-     * @return CustomForm
-     */
-    public CustomForm addElement(CustomElement element) {
-        elements.add(element);
+    public CustomForm setSubmitButton(String submitButton) {
+        this.submitButton = submitButton;
         return this;
     }
 
     /**
-     * Add form element
-     * @param elementId Element identifier
-     * @param element   CustomElement
-     * @return CustomForm
+     * Adds a text label element to the form.
+     *
+     * @param text The label text
+     * @return This form instance for chaining
      */
-    public CustomForm addElement(String elementId, CustomElement element) {
-        element.setElementId(elementId);
-        return addElement(element);
+    public CustomForm addElement(String text) {
+        return this.addElement(new Label(text));
     }
 
     /**
-     * Set form handler
-     * @param handler CustomFormHandler
-     * @return CustomForm
-    */
+     * Adds a custom form element.
+     *
+     * @param element The element to add
+     * @return This form instance for chaining
+     */
+    public CustomForm addElement(ElementCustom element) {
+        return this.addElement(element.getName(), element);
+    }
+
+    /**
+     * Adds a custom form element with specified ID.
+     *
+     * @param elementId The unique identifier for the element
+     * @param element The element to add
+     * @return This form instance for chaining
+     */
+    public CustomForm addElement(String elementId, ElementCustom element) {
+        elements.add(element);
+        if (element instanceof ElementIdentifiable elementIdentifiable) {
+            elementIdentifiable.setElementId(elementId);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the form submission handler.
+     *
+     * @param handler The handler to process form responses
+     * @return This form instance for chaining
+     */
     public CustomForm setHandler(CustomFormHandler handler) {
         this.handler = handler;
         return this;
     }
 
+    /**
+     * Processes the form response data.
+     *
+     * @param data The raw response data from client
+     */
     @Override
-    public void setResponse(String data) {
+    public void setResponse(int protocol, String data) {
         if (data.equals("null")) {
             return;
         }
 
         Object[] result = new Gson().fromJson(data, Object[].class);
 
-        for (int i = 0; i < elements.size(); i++) {
-            CustomElement element = elements.get(i);
+        int index = 0;
+        for (ElementCustom element : elements) {
+            // For compatibility with responses between versions 1.21.70 and 1.21.80. Mojang wtf?
+            if ((element instanceof Label || element instanceof Header || element instanceof Divider) &&
+                protocol >= ProtocolInfo.v1_21_70_24 && protocol < ProtocolInfo.v1_21_80) {
+                continue;
+            }
 
-            if (!element.respond(result[i])) {
+            if (!element.respond(result[index])) {
                 this.response = new CustomFormResponse((player, response) -> send(player), elements, this);
                 return;
             }
@@ -114,17 +148,10 @@ public class CustomForm extends CloseableForm {
             if (element instanceof ValidationField && this.validated && !((ValidationField) element).isValidated()) {
                 this.validated = false;
             }
-        }
 
-        for (int index = 0; index < elements.size(); index++) {
-            elements.get(index).setIndex(index);
+            index++;
         }
 
         this.response = new CustomFormResponse(handler, elements, this);
-    }
-
-    public void send(Player player, CustomFormHandler handler) {
-        this.setHandler(handler);
-        this.send(player);
     }
 }

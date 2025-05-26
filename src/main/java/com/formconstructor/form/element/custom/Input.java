@@ -1,5 +1,7 @@
 package com.formconstructor.form.element.custom;
 
+import com.formconstructor.form.element.ElementCustom;
+import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.custom.validator.ValidationField;
 import com.formconstructor.form.element.custom.validator.Validator;
@@ -11,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class Input extends CustomElement implements ValidationField {
+public class Input extends ElementIdentifiable implements ElementCustom, ValidationField {
 
     private String placeholder;
 

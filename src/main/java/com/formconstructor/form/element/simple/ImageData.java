@@ -6,10 +6,13 @@ import lombok.Getter;
 @Getter
 public class ImageData {
 
-    @SerializedName("type") private final ImageType type;
-    @SerializedName("data") private final String path;
-
     private static final ImageData EMPTY = new ImageData();
+
+    @SerializedName("type")
+    private final ImageType type;
+
+    @SerializedName("data")
+    private final String path;
 
     public ImageData() {
         this(ImageType.PATH, "");

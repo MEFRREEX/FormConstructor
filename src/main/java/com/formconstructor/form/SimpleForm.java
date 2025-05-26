@@ -1,57 +1,72 @@
 package com.formconstructor.form;
 
+import cn.nukkit.network.protocol.ProtocolInfo;
+import com.formconstructor.form.element.ElementSimple;
+import com.formconstructor.form.element.general.Divider;
+import com.formconstructor.form.element.general.Header;
+import com.formconstructor.form.element.general.Label;
 import com.formconstructor.form.element.simple.Button;
 import com.formconstructor.form.element.simple.ImageType;
-import com.formconstructor.form.handler.CloseFormHandler;
 import com.formconstructor.form.handler.SimpleFormHandler;
 import com.formconstructor.form.response.SimpleFormResponse;
+import com.google.gson.*;
 import lombok.Getter;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Represents a simple form with buttons (and headers, labels,
+ * dividers) elements that can be shown to players.
+ */
 @Getter
 public class SimpleForm extends CloseableForm {
 
+    private static final Gson GSON_LEGACY = new GsonBuilder().registerTypeAdapter(SimpleForm.class, new SimpleFormLegacySerializer()).create();
+
     private String title;
     private String content;
-    private final List<Button> buttons = new ArrayList<>();
+
+    private final List<ElementSimple> elements = new ArrayList<>();
     
     private transient SimpleFormResponse response;
 
+    /**
+     * Creates an empty simple form.
+     */
     public SimpleForm() {
         this("");
     }
 
+    /**
+     * Creates a simple form with title.
+     *
+     * @param title The form title
+     */
     public SimpleForm(String title) {
         this(title, "");
     }
 
+    /**
+     * Creates a simple form with title and content.
+     *
+     * @param title The form title
+     * @param content The form content
+     */
     public SimpleForm(String title, String content) {
-        this(title, content, null);
-    }
-
-    public SimpleForm(String title, String content, CloseFormHandler closeHandler) {
-        this(title, content, closeHandler, null);
-    }
-
-    public SimpleForm(String title, String content, CloseFormHandler closeHandler, Collection<Button> buttons) {
         super(FormType.SIMPLE);
         this.title = title;
         this.content = content;
-        this.setCloseHandler(closeHandler);
-
-        if (buttons != null) {
-            this.buttons.addAll(buttons);
-        }
     }
 
     /**
-     * Set form title
-     * @param title Text
-     * @return SimpleForm
+     * Sets the form title.
+     *
+     * @param title The title text
+     * @return This form instance for chaining
      */
     public SimpleForm setTitle(String title) {
         this.title = title;
@@ -59,9 +74,10 @@ public class SimpleForm extends CloseableForm {
     }
 
     /**
-     * Set form content
-     * @param content Text
-     * @return SimpleForm
+     * Sets the form content.
+     *
+     * @param content The content text
+     * @return This form instance for chaining
      */
     public SimpleForm setContent(String content) {
         this.content = content;
@@ -69,9 +85,10 @@ public class SimpleForm extends CloseableForm {
     }
 
     /**
-     * Add form content
-     * @param content Text
-     * @return SimpleForm
+     * Appends text to the form content.
+     *
+     * @param content The content to append
+     * @return This form instance for chaining
      */
     public SimpleForm addContent(String content) {
         this.content += content;
@@ -79,61 +96,95 @@ public class SimpleForm extends CloseableForm {
     }
 
     /**
-     * Add a button to the form
-     * @param name Button name
-     * @return SimpleForm
+     * Adds a header element to the form.
+     *
+     * @param header The header text
+     * @return This form instance for chaining
+     */
+    public SimpleForm addHeader(String header) {
+        return this.addElement(new Header(header));
+    }
+
+    /**
+     * Adds a label element to the form.
+     *
+     * @param label The label text
+     * @return This form instance for chaining
+     */
+    public SimpleForm addLabel(String label) {
+        return this.addElement(new Label(label));
+    }
+
+    /**
+     * Adds a divider element to the form.
+     *
+     * @return This form instance for chaining
+     */
+    public SimpleForm addDivider() {
+        return this.addElement(new Divider());
+    }
+
+    /**
+     * Adds a button with text only.
+     *
+     * @param name The button text
+     * @return This form instance for chaining
      */
     public SimpleForm addButton(String name) {
-        return addButton(name, null);
+        return this.addButton(name, null);
     }
 
     /**
-     * Add a button to the form
-     * @param name    Button name
-     * @param handler Button handler
-     * @return SimpleForm
+     * Adds a button with text and handler.
+     *
+     * @param name The button text
+     * @param handler The click handler
+     * @return This form instance for chaining
      */
     public SimpleForm addButton(String name, SimpleFormHandler handler) {
-        return addButton(name, ImageType.PATH, "", handler);
+        return this.addButton(name, ImageType.PATH, "", handler);
     }
 
     /**
-     * Add a button to the form
-     * @param name      Button name
-     * @param imageType Type of image on button
-     * @param path      Path to image on button
-     * @return SimpleForm
+     * Adds a button with text and image.
+     *
+     * @param name The button text
+     * @param imageType The type of image
+     * @param path The image path
+     * @return This form instance for chaining
      */
     public SimpleForm addButton(String name, ImageType imageType, String path) {
-        return addButton(name, imageType, path, null);
+        return this.addButton(name, imageType, path, null);
     }
 
     /**
-     * Add a button to the form
-     * @param name      Button name
-     * @param imageType Type of image on button
-     * @param path      Path to image on button
-     * @param handler   Button handler
-     * @return SimpleForm
+     * Adds a button with all parameters.
+     *
+     * @param name The button text
+     * @param imageType The type of image
+     * @param path The image path
+     * @param handler The click handler
+     * @return This form instance for chaining
      */
     public SimpleForm addButton(String name, ImageType imageType, String path, SimpleFormHandler handler) {
-        return addButton(new Button(name, imageType, path, handler));
+        return this.addButton(new Button(name, imageType, path, handler));
     }
 
     /**
-     * Add a button to the form
-     * @param button Button
-     * @return SimpleForm
+     * Adds a pre-configured button.
+     *
+     * @param button The button to add
+     * @return This form instance for chaining
      */
     public SimpleForm addButton(Button button) {
-        this.buttons.add(button);
-        return this;
+        return this.addElement(button);
     }
 
     /**
-     * Add a buttons to the form
-     * @param buttons Button array
-     * @return SimpleForm
+     * Adds multiple buttons.
+     *
+     * @param buttons The buttons to add
+     * @return This form instance for chaining
      */
     public SimpleForm addButtons(Button... buttons) {
         Arrays.asList(buttons).forEach(this::addButton);
@@ -141,20 +192,42 @@ public class SimpleForm extends CloseableForm {
     }
 
     /**
-     * Add a buttons to the form
-     * @param buttons Collection of button
-     * @return SimpleForm
+     * Adds a collection of buttons.
+     *
+     * @param buttons The buttons to add
+     * @return This form instance for chaining
      */
     public SimpleForm addButtons(Collection<Button> buttons) {
         buttons.forEach(this::addButton);
         return this;
     }
 
+    /**
+     * Adds a generic form element.
+     *
+     * @param element The element to add
+     * @return This form instance for chaining
+     */
+    public SimpleForm addElement(ElementSimple element) {
+        this.elements.add(element);
+        return this;
+    }
+
+    /**
+     * Processes the form response.
+     *
+     * @param data The raw response data
+     */
     @Override
-    public void setResponse(String data) {
+    public void setResponse(int protocol, String data) {
         if (data.equals("null")) {
             return;
         }
+
+        List<Button> buttons = elements.stream()
+                .filter(element -> element instanceof Button)
+                .map(element -> (Button) element)
+                .toList();
     
         int buttonId;
         try {
@@ -167,11 +240,39 @@ public class SimpleForm extends CloseableForm {
             this.response = new SimpleFormResponse(new Button("Invalid", (p, b) -> send(p)));
             return;
         }
-    
-        for (int index = 0; index < buttons.size(); index++) {
-            buttons.get(index).setIndex(index);
-        }
 
         this.response = new SimpleFormResponse(buttons.get(buttonId));
+    }
+
+    /**
+     * Serializes the form to JSON based on protocol version.
+     *
+     * @param protocol The protocol version
+     * @return JSON data of the form
+     */
+    @Override
+    public String toJson(int protocol) {
+        if (protocol >= ProtocolInfo.v1_21_70_24) {
+            return GSON.toJson(this);
+        }
+        return GSON_LEGACY.toJson(this);
+    }
+
+    /**
+     * Custom JSON serializer for legacy protocol versions.
+     */
+    private static class SimpleFormLegacySerializer implements JsonSerializer<SimpleForm> {
+        @Override
+        public JsonElement serialize(SimpleForm src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonObject = JsonParser.parseString(GSON.toJson(src)).getAsJsonObject();
+
+            List<ElementSimple> filteredButtons = src.elements.stream()
+                    .filter(e -> e instanceof Button)
+                    .toList();
+
+            jsonObject.remove("elements");
+            jsonObject.add("buttons", context.serialize(filteredButtons));
+            return jsonObject;
+        }
     }
 }

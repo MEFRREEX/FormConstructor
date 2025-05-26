@@ -1,8 +1,8 @@
-package com.formconstructor.form.element.custom;
+package com.formconstructor.form.element.general;
 
-import com.formconstructor.form.element.ElementType;
+import com.formconstructor.form.element.*;
 
-public class Label extends CustomElement {
+public class Label extends ElementIdentifiable implements ElementSimple, ElementCustom {
 
     public Label() {
         this("");

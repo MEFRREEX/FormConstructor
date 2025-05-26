@@ -1,49 +1,104 @@
 package com.formconstructor.form;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
-import cn.nukkit.form.window.FormWindow;
-import com.formconstructor.event.PlayerFormSendEvent;
+import cn.nukkit.network.protocol.ProtocolInfo;
+import com.formconstructor.event.form.PlayerFormSendEvent;
+import com.formconstructor.form.response.FormResponse;
+import com.formconstructor.service.FormService;
+import com.google.gson.Gson;
 import lombok.Getter;
 
+/**
+ * Abstract base class for creating and managing forms.
+ */
 @Getter
-public abstract class Form extends FormWindow {
+public abstract class Form {
+
+    protected static final Gson GSON = new Gson();
 
     private final FormType type;
     private transient boolean async;
 
+    /**
+     * Creates a form with type.
+     */
     public Form(FormType type) {
         this.type = type;
     }
 
     /**
-     * Send form
-     * @param player Player
+     * Sends the form to a player synchronously.
+     *
+     * @param player The player to send the form to
      */
     public void send(Player player) {
-        send(player, false);
+        this.send(player, false);
     }
 
     /**
-     * Send form
-     * @param player Player
-     * @param async  Send form asynchronously
+     * Sends the form to a player with async option.
+     *
+     * @param player The player to send the form to
+     * @param async Whether to send the form asynchronously
      */
     public void send(Player player, boolean async) {
         PlayerFormSendEvent event = new PlayerFormSendEvent(player, this, async);
-        Server.getInstance().getPluginManager().callEvent(event);
 
-        if (!event.isCancelled()) {
+        if (event.callEvent()) {
             this.async = event.isAsync();
-            player.showFormWindow(this);
+            FormService.getInstance().sendForm(player, this);
         }
     }
 
     /**
-     * Send form asynchronously
-     * @param player Player
+     * Sends the form to a player asynchronously.
+     *
+     * @param player The player to send the form to
      */
     public void sendAsync(Player player) {
-        send(player, true);
+        this.send(player, true);
+    }
+
+    /**
+     * Sends the form update to a player.
+     *
+     * @param player The player to send the form update to
+     */
+    public void sendUpdate(Player player) {
+        FormService.getInstance().sendUpdate(player, this);
+    }
+
+    /**
+     * Sets the form response from raw data.
+     *
+     * @param protocol The response protocol version
+     * @param data The raw response data
+     */
+    public abstract void setResponse(int protocol, String data);
+
+    /**
+     * Gets the parsed form response.
+     *
+     * @return The form response object
+     */
+    public abstract FormResponse<?> getResponse();
+
+    /**
+     * Converts the form to JSON using current server protocol.
+     *
+     * @return JSON data of the form
+     */
+    public String toJson() {
+        return this.toJson(ProtocolInfo.CURRENT_PROTOCOL);
+    }
+
+    /**
+     * Converts the form to JSON for specific protocol version.
+     *
+     * @param protocol The protocol version to use
+     * @return JSON data of the form
+     */
+    public String toJson(int protocol) {
+        return GSON.toJson(this);
     }
 }

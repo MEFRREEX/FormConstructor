@@ -1,9 +1,11 @@
 package com.formconstructor.form.element.custom;
 
+import com.formconstructor.form.element.ElementCustom;
+import com.formconstructor.form.element.ElementIdentifiable;
 import com.formconstructor.form.element.ElementType;
 import com.google.gson.annotations.SerializedName;
 
-public class Toggle extends CustomElement {
+public class Toggle extends ElementIdentifiable implements ElementCustom {
 
     @SerializedName("default") 
     private final boolean defaultValue;
