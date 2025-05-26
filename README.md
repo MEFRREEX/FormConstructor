@@ -5,6 +5,10 @@
 [![Jitpack](https://jitpack.io/v/MEFRREEX/FormConstructor.svg)](https://jitpack.io/#MEFRREEX/FormConstructor)
 [![CloudBurst](https://img.shields.io/badge/CloudBurst-2.0.1-brightgreen)](https://cloudburstmc.org/resources/formconstructor-v2.957)
 
+> [!IMPORTANT]
+> Verstion 3.0.0 is no longer compatible with 2.0.x. If you need older version use:  
+> https://github.com/MEFRREEX/FormConstructor/tree/legacy-2.0.0
+
 # 🤔 Introduction
 
 Library is designed to simplify the creation and handling of forms.
