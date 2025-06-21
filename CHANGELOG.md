@@ -1,3 +1,6 @@
+# 3.1.0
+1. Added API for tooltips for custom elements (`ElementTooltip#getTooltip()` and `ElementTooltip#setTooltip(String tooltip)`)
+
 # 3.0.0
 1. Removed useless [constructors](https://github.com/MEFRREEX/FormConstructor/commit/a5ebafd0ae5fc3f7c9fb7a21d036b05662543814) and [methods](https://github.com/MEFRREEX/FormConstructor/commit/d080f3d4906064d439e0c6597dc6e5e6f1cb951a) from CustomForm, ModalForm
 2. Removed dependence on Nukkit forms + added FormService class

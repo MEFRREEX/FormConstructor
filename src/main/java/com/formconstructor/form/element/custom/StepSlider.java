@@ -2,6 +2,7 @@ package com.formconstructor.form.element.custom;
 
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
+import com.formconstructor.form.element.ElementTooltip;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.SelectableElement;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class StepSlider extends ElementIdentifiable implements ElementCustom {
+public class StepSlider extends ElementIdentifiable implements ElementCustom, ElementTooltip {
 
     @SerializedName("default")
     private int defaultIndex;
@@ -25,6 +26,8 @@ public class StepSlider extends ElementIdentifiable implements ElementCustom {
     private final transient List<SelectableElement> elements = new ArrayList<>();
 
     private transient int selectedIndex = -1;
+
+    private String tooltip = "";
 
     public StepSlider() {
         this("");
@@ -84,6 +87,17 @@ public class StepSlider extends ElementIdentifiable implements ElementCustom {
 
     public SelectableElement getValue() {
         return (elements.isEmpty() || (elements.size() == 1 && selectedIndex == 1)) ? null : elements.get(selectedIndex);
+    }
+
+    @Override
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    @Override
+    public StepSlider setTooltip(String tooltip) {
+        this.tooltip = tooltip;
+        return this;
     }
 
     @Override

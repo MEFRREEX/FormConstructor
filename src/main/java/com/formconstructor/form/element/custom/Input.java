@@ -2,6 +2,7 @@ package com.formconstructor.form.element.custom;
 
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
+import com.formconstructor.form.element.ElementTooltip;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.custom.validator.ValidationField;
 import com.formconstructor.form.element.custom.validator.Validator;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class Input extends ElementIdentifiable implements ElementCustom, ValidationField {
+public class Input extends ElementIdentifiable implements ElementCustom, ElementTooltip, ValidationField {
 
     private String placeholder;
 
@@ -25,6 +26,8 @@ public class Input extends ElementIdentifiable implements ElementCustom, Validat
     private transient boolean trim;
 
     private transient List<Validator> validators;
+
+    private String tooltip = "";
 
     public Input() {
         this("");
@@ -67,6 +70,17 @@ public class Input extends ElementIdentifiable implements ElementCustom, Validat
 
     public Input setTrim(boolean trim) {
         this.trim = trim;
+        return this;
+    }
+
+    @Override
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    @Override
+    public Input setTooltip(String tooltip) {
+        this.tooltip = tooltip;
         return this;
     }
 

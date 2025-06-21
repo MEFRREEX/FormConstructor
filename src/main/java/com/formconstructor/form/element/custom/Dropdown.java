@@ -2,6 +2,7 @@ package com.formconstructor.form.element.custom;
 
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
+import com.formconstructor.form.element.ElementTooltip;
 import com.formconstructor.form.element.ElementType;
 import com.formconstructor.form.element.SelectableElement;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class Dropdown extends ElementIdentifiable implements ElementCustom {
+public class Dropdown extends ElementIdentifiable implements ElementCustom, ElementTooltip {
 
     @SerializedName("default")
     private int defaultIndex;
@@ -24,6 +25,8 @@ public class Dropdown extends ElementIdentifiable implements ElementCustom {
     private final transient List<SelectableElement> elements = new ArrayList<>();
 
     private transient int selectedIndex = -1;
+
+    private String tooltip = "";
 
     public Dropdown() {
         this("");
@@ -83,6 +86,17 @@ public class Dropdown extends ElementIdentifiable implements ElementCustom {
 
     public SelectableElement getValue() {
         return elements.isEmpty() ? null : elements.get(selectedIndex);
+    }
+
+    @Override
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    @Override
+    public Dropdown setTooltip(String tooltip) {
+        this.tooltip = tooltip;
+        return this;
     }
 
     @Override

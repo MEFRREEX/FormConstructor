@@ -2,12 +2,13 @@ package com.formconstructor.form.element.custom;
 
 import com.formconstructor.form.element.ElementCustom;
 import com.formconstructor.form.element.ElementIdentifiable;
+import com.formconstructor.form.element.ElementTooltip;
 import com.formconstructor.form.element.ElementType;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 
 @Getter
-public class Slider extends ElementIdentifiable implements ElementCustom {
+public class Slider extends ElementIdentifiable implements ElementCustom, ElementTooltip {
 
     @SerializedName("default")
     private float defaultValue;
@@ -17,6 +18,8 @@ public class Slider extends ElementIdentifiable implements ElementCustom {
     private float step;
 
     private transient float value = -1;
+
+    private String tooltip = "";
 
     public Slider() {
         this("");
@@ -66,6 +69,17 @@ public class Slider extends ElementIdentifiable implements ElementCustom {
 
     public Slider setDefaultValue(float defaultValue) {
         this.defaultValue = defaultValue;
+        return this;
+    }
+
+    @Override
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    @Override
+    public Slider setTooltip(String tooltip) {
+        this.tooltip = tooltip;
         return this;
     }
 
