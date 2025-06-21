@@ -1,7 +1,7 @@
 ![logo](.github/logo_v3.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-3.0.0-brightgreen)](https://github.com/MEFRREEX/FormConstructor/releases/tag/2.0.1)
+[![Version](https://img.shields.io/badge/Version-3.1.0-brightgreen)](https://github.com/MEFRREEX/FormConstructor/releases/tag/2.0.1)
 [![Jitpack](https://jitpack.io/v/MEFRREEX/FormConstructor.svg)](https://jitpack.io/#MEFRREEX/FormConstructor)
 [![CloudBurst](https://img.shields.io/badge/CloudBurst-2.0.1-brightgreen)](https://cloudburstmc.org/resources/formconstructor-v2.957)
 
