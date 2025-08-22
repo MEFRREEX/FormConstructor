@@ -191,20 +191,18 @@ Place the plugin of the appropriate version in the `plugins` folder.
 
 Repository:
 ```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
+<repository>
+    <id>luminiadev-repository-releases</id>
+    <url>https://repo.luminiadev.com/releases</url>
+</repository>
 ```
 
 Dependency
 ```xml
 <dependency>
-    <groupId>com.github.MEFRREEX</groupId>
-    <artifactId>FormConstructor</artifactId>
-    <version>TAG</version>
+    <groupId>com.mefrreex.formconstructor</groupId>
+    <artifactId>formconstructor</artifactId>
+    <version>3.1.0</version>
 </dependency>
 ```
 
@@ -212,13 +210,12 @@ Dependency
 
 Repository:
 ```groovy
-repositories {
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
+maven {
+    name "luminiadevRepositoryReleases"
+    url "https://repo.luminiadev.com/releases"
 }
 ```
 Dependency:
 ```groovy
-dependencies {
-    implementation 'com.github.MEFRREEX:FormConstructor:TAG'
-}
+implementation "com.mefrreex.formconstructor:formconstructor:3.1.0"
+```
