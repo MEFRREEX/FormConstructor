@@ -10,6 +10,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -28,7 +30,13 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<Javadoc> {
+    isFailOnError  = false
     options.encoding = "UTF-8"
+    (options as StandardJavadocDocletOptions).apply {
+        addBooleanOption("Xdoclint:none", true)
+        addStringOption("encoding", "UTF-8")
+        addStringOption("charSet", "UTF-8")
+    }
 }
 
 tasks.withType<ProcessResources> {
