@@ -66,7 +66,7 @@ public class FormServiceImpl implements FormService {
         // Thanks to https://github.com/PowerNukkitX/PowerNukkitX for this code!
         ServerSettingsResponsePacket packet = new ServerSettingsResponsePacket();
         packet.formId = formId.get();
-        packet.data = form.toJson();
+        packet.data = form.toJson(player.protocol);
         player.dataPacket(packet);
     }
 

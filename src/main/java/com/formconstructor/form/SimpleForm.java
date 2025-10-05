@@ -25,7 +25,7 @@ import java.util.List;
 @Getter
 public class SimpleForm extends CloseableForm {
 
-    private static final Gson GSON_LEGACY = new GsonBuilder().registerTypeAdapter(SimpleForm.class, new SimpleFormLegacySerializer()).create();
+    private static final Gson GSON_LEGACY = new GsonBuilder().registerTypeHierarchyAdapter(SimpleForm.class, new SimpleFormLegacySerializer()).create();
 
     private String title;
     private String content;
